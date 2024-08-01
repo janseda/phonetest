@@ -3,59 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Senzory na iPhone a Android</title>
+    <title>Gyroskopické senzory iPhone</title>
 </head>
 <body>
-    <h1>Senzory na Telefonech</h1>
-
-    <div id="accelerometer">
-        <h2>Akcelerometr</h2>
-        <p>x: <span id="acc-x">0</span></p>
-        <p>y: <span id="acc-y">0</span></p>
-        <p>z: <span id="acc-z">0</span></p>
+    <h1>Gyroskopická data iPhone</h1>
+    <div>
+        <p>Alpha (Rotation around z-axis): <span id="alpha">0</span></p>
+        <p>Beta (Rotation around x-axis): <span id="beta">0</span></p>
+        <p>Gamma (Rotation around y-axis): <span id="gamma">0</span></p>
     </div>
-
-    <div id="gyroscope">
-        <h2>Gyroskop</h2>
-        <p>x: <span id="gyro-x">0</span></p>
-        <p>y: <span id="gyro-y">0</span></p>
-        <p>z: <span id="gyro-z">0</span></p>
-    </div>
-
-    <div id="magnetometer">
-        <h2>Magnetometr</h2>
-        <p>x: <span id="mag-x">0</span></p>
-        <p>y: <span id="mag-y">0</span></p>
-        <p>z: <span id="mag-z">0</span></p>
-    </div>
-
-    <div id="location">
-        <h2>GPS</h2>
-        <p>Latitude: <span id="latitude">0</span></p>
-        <p>Longitude: <span id="longitude">0</span></p>
-    </div>
-
-    <div id="light">
-        <h2>Světelný senzor</h2>
-        <p>Illuminance: <span id="illuminance">0</span> lux</p>
-    </div>
-
-    <div id="proximity">
-        <h2>Proximity senzor</h2>
-        <p>Distance: <span id="proximity-distance">0</span> cm</p>
-    </div>
-
-    <div id="battery">
-        <h2>Baterie</h2>
-        <p>Nabíjení: <span id="charging">Ne</span></p>
-        <p>Úroveň baterie: <span id="battery-level">0</span>%</p>
-    </div>
-
-    <div id="vibration">
-        <h2>Vibrační API</h2>
-        <button id="vibrate-button">Zavibrovat</button>
-    </div>
-
     <script src="script.js"></script>
 </body>
 </html>
