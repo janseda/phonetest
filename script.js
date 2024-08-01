@@ -1,4 +1,3 @@
-// Funkce pro spuštění senzorů
 function startSensors() {
     // Akcelerometr
     if ('Accelerometer' in window) {
@@ -26,16 +25,76 @@ function startSensors() {
         alert("Gyroskop není podporován.");
     }
 
-    // Orientace zařízení
-    if (window.DeviceOrientationEvent) {
-        window.addEventListener('deviceorientation', function(event) {
-            document.getElementById('alpha').textContent = event.alpha.toFixed(2);
-            document.getElementById('beta').textContent = event.beta.toFixed(2);
-            document.getElementById('gamma').textContent = event.gamma.toFixed(2);
-        }, true);
+    // Magnetometr
+    if ('Magnetometer' in window) {
+        let magnetometer = new Magnetometer({frequency: 60});
+        magnetometer.addEventListener('reading', () => {
+            document.getElementById('mag-x').textContent = magnetometer.x.toFixed(2);
+            document.getElementById('mag-y').textContent = magnetometer.y.toFixed(2);
+            document.getElementById('mag-z').textContent = magnetometer.z.toFixed(2);
+        });
+        magnetometer.start();
     } else {
-        alert("Orientace zařízení není podporována.");
+        alert("Magnetometr není podporován.");
     }
+
+    // GPS
+    if ('geolocation' in navigator) {
+        navigator.geolocation.getCurrentPosition((position) => {
+            document.getElementById('latitude').textContent = position.coords.latitude;
+            document.getElementId('longitude').textContent = position.coords.longitude;
+        });
+    } else {
+        alert("GPS není podporována.");
+    }
+
+    // Světelný senzor
+    if ('AmbientLightSensor' in window) {
+        let lightSensor = new AmbientLightSensor();
+        lightSensor.addEventListener('reading', () => {
+            document.getElementById('illuminance').textContent = lightSensor.illuminance;
+        });
+        lightSensor.start();
+    } else {
+        alert("Světelný senzor není podporován.");
+    }
+
+    // Proximity senzor
+    if ('ProximitySensor' in window) {
+        let proximitySensor = new ProximitySensor();
+        proximitySensor.addEventListener('reading', () => {
+            document.getElementById('proximity-distance').textContent = proximitySensor.distance;
+        });
+        proximitySensor.start();
+    } else {
+        alert("Proximity senzor není podporován.");
+    }
+
+    // Baterie
+    if ('getBattery' in navigator) {
+        navigator.getBattery().then((battery) => {
+            document.getElementById('charging').textContent = battery.charging ? "Ano" : "Ne";
+            document.getElementById('battery-level').textContent = (battery.level * 100).toFixed(0);
+            
+            battery.addEventListener('chargingchange', () => {
+                document.getElementById('charging').textContent = battery.charging ? "Ano" : "Ne";
+            });
+            battery.addEventListener('levelchange', () => {
+                document.getElementById('battery-level').textContent = (battery.level * 100).toFixed(0);
+            });
+        });
+    } else {
+        alert("Battery API není podporováno.");
+    }
+
+    // Vibrační API
+    document.getElementById('vibrate-button').addEventListener('click', () => {
+        if ('vibrate' in navigator) {
+            navigator.vibrate(200); // Vibrace na 200ms
+        } else {
+            alert("Vibrační API není podporováno.");
+        }
+    });
 }
 
 // Funkce pro požádání o oprávnění
