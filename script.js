@@ -1,18 +1,4 @@
-// Žádost o přístup k DeviceMotion a DeviceOrientation
-if (typeof DeviceMotionEvent.requestPermission === 'function') {
-    DeviceMotionEvent.requestPermission()
-        .then(permissionState => {
-            if (permissionState === 'granted') {
-                // Přístup povolen, můžeš inicializovat akcelerometr a gyroskop
-                startSensors();
-            }
-        })
-        .catch(console.error);
-} else {
-    // Přístup je automaticky povolen, můžeš inicializovat akcelerometr a gyroskop
-    startSensors();
-}
-
+// Funkce pro spuštění senzorů
 function startSensors() {
     // Akcelerometr
     if ('Accelerometer' in window) {
@@ -51,3 +37,28 @@ function startSensors() {
         alert("Orientace zařízení není podporována.");
     }
 }
+
+// Funkce pro požádání o oprávnění
+function requestPermission() {
+    if (typeof DeviceMotionEvent.requestPermission === 'function' || typeof DeviceOrientationEvent.requestPermission === 'function') {
+        // Pro iOS
+        Promise.all([
+            DeviceMotionEvent.requestPermission(),
+            DeviceOrientationEvent.requestPermission()
+        ])
+        .then(results => {
+            if (results.every(result => result === 'granted')) {
+                startSensors();
+            } else {
+                alert("Oprávnění ke snímačům nebyla udělena.");
+            }
+        })
+        .catch(console.error);
+    } else {
+        // Pro Android
+        startSensors();
+    }
+}
+
+// Spuštění požádání o oprávnění
+requestPermission();
