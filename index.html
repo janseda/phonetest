@@ -3,15 +3,67 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gyroskopické senzory iPhone</title>
+    <title>Použití senzorů iPhone</title>
 </head>
 <body>
-    <h1>Gyroskopická data iPhone</h1>
-    <div>
-        <p>Alpha (Rotation around z-axis): <span id="alpha">0</span></p>
-        <p>Beta (Rotation around x-axis): <span id="beta">0</span></p>
-        <p>Gamma (Rotation around y-axis): <span id="gamma">0</span></p>
-    </div>
-    <script src="script.js"></script>
+    <h1>Použití senzorů iPhone</h1>
+
+    <h2>Gyroskop a akcelerometr</h2>
+    <p id="motionData">Čekání na data z gyroskopu a akcelerometru...</p>
+
+    <h2>Geolokace</h2>
+    <p id="locationData">Čekání na data z GPS...</p>
+
+    <h2>Magnetometr</h2>
+    <p id="magnetometerData">Čekání na data z magnetometru...</p>
+
+    <script>
+        // Gyroskop a Akcelerometr
+        if (window.DeviceMotionEvent) {
+            window.addEventListener('devicemotion', function(event) {
+                let motionData = document.getElementById('motionData');
+                motionData.innerHTML = `
+                    Zrychlení x: ${event.acceleration.x} m/s²<br>
+                    Zrychlení y: ${event.acceleration.y} m/s²<br>
+                    Zrychlení z: ${event.acceleration.z} m/s²<br>
+                    Rotace alfa: ${event.rotationRate.alpha} °/s<br>
+                    Rotace beta: ${event.rotationRate.beta} °/s<br>
+                    Rotace gamma: ${event.rotationRate.gamma} °/s<br>
+                `;
+            });
+        } else {
+            alert("Gyroskop a akcelerometr nejsou podporovány v tomto zařízení.");
+        }
+
+        // Geolokace
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function(position) {
+                let locationData = document.getElementById('locationData');
+                locationData.innerHTML = `
+                    Zeměpisná šířka: ${position.coords.latitude}<br>
+                    Zeměpisná délka: ${position.coords.longitude}<br>
+                    Přesnost: ${position.coords.accuracy} metrů<br>
+                `;
+            }, function(error) {
+                alert("Nelze získat geolokaci: " + error.message);
+            });
+        } else {
+            alert("Geolokace není podporována v tomto zařízení.");
+        }
+
+        // Magnetometr (Kompas)
+        if (window.DeviceOrientationEvent) {
+            window.addEventListener('deviceorientation', function(event) {
+                let magnetometerData = document.getElementById('magnetometerData');
+                magnetometerData.innerHTML = `
+                    Orientace alfa: ${event.alpha} °<br>
+                    Orientace beta: ${event.beta} °<br>
+                    Orientace gamma: ${event.gamma} °<br>
+                `;
+            });
+        } else {
+            alert("Magnetometr není podporován v tomto zařízení.");
+        }
+    </script>
 </body>
 </html>
